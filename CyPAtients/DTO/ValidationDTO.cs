@@ -1,0 +1,76 @@
+﻿using CyPatients.Models;
+
+namespace CyPatients.DTO
+{
+    public class ValidationDTO
+    {
+
+        public int VisitTypeId { get; set; }
+
+        public int MedicalEntityId { get; set; }
+
+        public bool FirstNameAr { get; set; }
+
+        public bool SecondNameAr { get; set; }
+
+        public bool ThirdNameAr { get; set; }
+
+        public bool FourthNameAr { get; set; }
+
+        public bool FirstNameEn { get; set; }
+
+        public bool SecondNameEn { get; set; }
+
+        public bool ThirdNameEn { get; set; }
+
+        public bool FourthNameEn { get; set; }
+
+        public bool PersonalId { get; set; }
+
+        public bool DateOfBirth { get; set; }
+
+        public bool Gender { get; set; }
+
+        public bool TitleId { get; set; }
+
+        public bool Occupation { get; set; }
+
+        public bool MaritalStatusId { get; set; }
+
+        public bool ChildrenNumber { get; set; }
+
+        public bool NationalityId { get; set; }
+
+        public bool HowDidYouKnowUsId { get; set; }
+
+        public bool Country { get; set; }
+
+        public bool City { get; set; }
+
+        public bool Region { get; set; }
+
+        public bool AddressDescription { get; set; }
+
+        public bool ZipCode { get; set; }
+
+        public bool InstanceNumber { get; set; }
+
+        public bool Mobile { get; set; }
+
+        public bool Mobile2 { get; set; }
+
+        public bool Email { get; set; }
+
+        public bool FinancialType { get; set; }
+
+        public bool Contractor { get; set; }
+
+        public bool ContractType { get; set; }
+
+        public bool ContractCategory { get; set; }
+
+        public bool BeneficiaryType { get; set; }
+
+        public bool ContractorClient { get; set; }
+    }
+}
