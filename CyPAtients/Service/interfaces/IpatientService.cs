@@ -10,7 +10,7 @@ namespace CyPatients.Service.interfaces
         Task<PagePagination<Patient>> GetAllPagedPatientsAsync(int current);
         Task<PatientListDTO> GetPatientByIdAsync(int id);
 
-        Task<PatientsDTO> CreatePatientAsync(PatientCreateDTO patient);
+        Task<PatientsDTO> CreatePatientAsync(Patient patient);
 
         Task DeletePatientAsnc(int id);
         Task<PatientsDTO> UpdatePatientAsync(int id, Patient patient);

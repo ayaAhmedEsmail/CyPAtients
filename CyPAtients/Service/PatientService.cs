@@ -3,31 +3,29 @@ using CyPatients.Models;
 using CyPatients.Service.interfaces;
 using Humanizer;
 using Microsoft.EntityFrameworkCore;
-using System.Net;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
 namespace CyPatients.Service
 {
     public class PatientService: IpatientService
     {
         private readonly CyhealthCare_dbContext _context;
 
-        private readonly IValidation _validation;
+        private readonly IValidationService _validation;
 
 
-      public PatientService(CyhealthCare_dbContext context  ,IValidation validation)
+      public PatientService(CyhealthCare_dbContext context  ,IValidationService validation)
         {
             _context = context;
             _validation = validation;
         }
 
-        public async Task<PatientsDTO> CreatePatientAsync(PatientCreateDTO _patient)
+        public async Task<PatientsDTO> CreatePatientAsync(Patient _patient)
         {
 
-            var _rules = await _validation.getValidatVisit(_patient.VisitTypeId, _patient.BranchId);
+            //var _rules = await _validation.getValidatVisit(_patient.VisitTypeId, _patient.BranchId);
 
 
-            var errors =  _validation.Validat(_patient, _rules);
+            //var errors =  _validation.Validat(_patient, _rules);
+          
 
             var patient = new Patient
             {
@@ -62,8 +60,10 @@ namespace CyPatients.Service
                 Region = _patient.Region,
                 FinancialType = _patient.FinancialType
             };
-            if (errors.Any())
-                    throw new Exception(string.Join(", ", errors));
+            //if (errors.Any())
+            //        throw new Exception(string.Join(", ", errors));
+
+            
             await _context.Patients.AddAsync(patient);
             await _context.SaveChangesAsync();
             return new PatientsDTO
@@ -164,8 +164,8 @@ namespace CyPatients.Service
                 .FirstOrDefaultAsync(p => p.Id == id);
 
 
-            var rules =await  _validation.getValidatVisit(patient.VisitTypeId, patient.BranchId);
-            var validation = _validation.Validat(patient, rules);
+            //var rules =await  _validation.getValidatVisit(patient.VisitTypeId, patient.BranchId);
+            //var validation = _validation.Validat(patient, rules);
 
             if (patient == null)
                 throw new Exception("Patient not found");
@@ -209,8 +209,8 @@ namespace CyPatients.Service
             patient.FinancialType = _patient.FinancialType ?? patient.FinancialType;
 
 
-            if (validation.Any()) 
-                throw new Exception(string.Join(", ", validation));
+            //if (validation.Any()) 
+            //    throw new Exception(string.Join(", ", validation));
           
 
             await _context.SaveChangesAsync();

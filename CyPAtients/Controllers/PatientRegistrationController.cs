@@ -1,5 +1,6 @@
 ﻿using CyPatients.DTO;
 using CyPatients.Models;
+using CyPatients.Service;
 using CyPatients.Service.interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,12 +20,16 @@ namespace CyPatients.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> RegisterPatient(PatientCreateDTO dto)
+        public async Task<IActionResult> RegisterPatient(Patient patient)
         {
             try
             {
-                var newPatient = await _patientService.CreatePatientAsync(dto);
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+                
+                var newPatient = await _patientService.CreatePatientAsync(patient);
                 return CreatedAtAction(nameof(GetPatientsByID), new { id = newPatient.Id }, newPatient);
+                
             }
             catch (DbUpdateException ex)
             {
@@ -34,13 +39,14 @@ namespace CyPatients.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new {message = ex.Message });
+                return BadRequest(new { message = ex.Message });
             }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPatientsByID(int id)
         {
+            NationalIdDetails.getYAge("30105241234567");
             var patients = await _patientService.GetPatientByIdAsync(id);
 
             return Ok(patients);
@@ -67,17 +73,12 @@ namespace CyPatients.Controllers
         public async Task<IActionResult> UpdatePatient(int id, Patient dto)
         {
             if (id != dto.Id) return BadRequest("Patient ID mismatch");
-
-            try
-            {
-                var updatedPatient = await _patientService.UpdatePatientAsync(id, dto);
-                return Ok(updatedPatient);
-            }
-            catch (Exception ex)
-            {
-                return NotFound(new { message = ex.Message });
-            }
-
+            if (!ModelState.IsValid) 
+                return BadRequest(ModelState);
+            
+            var updatedPatient = await _patientService.UpdatePatientAsync(id, dto);
+            
+            return Ok(updatedPatient);
         }
 
 

@@ -21,11 +21,22 @@ namespace CyPAtients
 
             builder.Services.AddScoped<IpatientService, PatientService>();
             builder.Services.AddScoped<IRegistrationValidation, RegistrationValidation>();
-            builder.Services.AddScoped<IValidation, Validation> ();
+            builder.Services.AddScoped<IValidationService, ValidationService> ();
+            
+            builder.Services.AddValidation();
 
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    policy => policy.AllowAnyOrigin()
+                                    .AllowAnyHeader()
+                                    .AllowAnyMethod());
+            });
 
             var app = builder.Build();
 
+            app.UseCors("AllowAll");
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {

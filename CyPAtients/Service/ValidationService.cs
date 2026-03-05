@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CyPatients.Service
 {
-    public class Validation : IValidationService
+    public class ValidationService : IValidationService
     {
         public readonly CyhealthCare_dbContext _dbContext;
 
-        public Validation(CyhealthCare_dbContext context)
+        public ValidationService(CyhealthCare_dbContext context)
         {
             _dbContext = context;
         }

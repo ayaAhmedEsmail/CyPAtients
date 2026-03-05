@@ -26,7 +26,7 @@ namespace CyPatients.Controllers
             return Ok(query);
         }
 
-        [HttpGet("{visitType,entityID}")]
+        [HttpGet("{visitType}/{entityID}")]
         public async Task<IActionResult> GetbyVisitType(int visitType, int entityID)
         {
             var validations = await _registrationValidation.GetValidationbyVistisAsync(visitType, entityID);
