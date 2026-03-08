@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CyPatients.Service
 {
     public class Validation : IValidationService
-    {
+    {   
         public readonly CyhealthCare_dbContext _dbContext;
 
         public Validation(CyhealthCare_dbContext context)

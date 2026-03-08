@@ -1,7 +1,6 @@
 ﻿using CyPatients.DTO;
 using CyPatients.Models;
 using CyPatients.Service.interfaces;
-using Humanizer;
 using Microsoft.EntityFrameworkCore;
 namespace CyPatients.Service
 {
