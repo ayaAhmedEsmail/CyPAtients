@@ -1,6 +1,8 @@
 
+using CyPatients.Hubs;
 using CyPatients.Service;
 using CyPatients.Service.interfaces;
+using Microsoft.Extensions.Options;
 
 namespace CyPAtients
 {
@@ -24,14 +26,20 @@ namespace CyPAtients
             builder.Services.AddScoped<IValidationService, ValidationService> ();
             
             builder.Services.AddValidation();
-
+            builder.Services.AddSignalR(options =>
+            {
+                options.EnableDetailedErrors = true;
+                options.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
+                options.KeepAliveInterval = TimeSpan.FromSeconds(15);
+            });
 
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll",
-                    policy => policy.AllowAnyOrigin()
+                    policy => policy.WithOrigins("http://localhost:5173")
                                     .AllowAnyHeader()
-                                    .AllowAnyMethod());
+                                    .AllowAnyMethod()
+                                    .AllowCredentials());
             });
 
             var app = builder.Build();
@@ -49,6 +57,8 @@ namespace CyPAtients
 
 
             app.MapControllers();
+            app.MapHub<CyPatients.Hubs.PatientHub>("/hubs/patient");
+
 
             app.Run();
         }

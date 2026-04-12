@@ -3,7 +3,7 @@ using CyPatients.Models;
 
 namespace CyPatients.Service.interfaces
 {
-    public interface IValidation
+    public interface IValidationService
     {
         // get flages depend on v,e
         Task<PatientValidationFlag> getValidatVisit(int visitTypeID, int entityID);

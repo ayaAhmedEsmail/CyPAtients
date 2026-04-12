@@ -1,3 +1,5 @@
 <Solution>
+  <Project Path="AppHost/AppHost.csproj" Id="e791eb9e-5e12-4f40-9246-6777b966c6ba" />
   <Project Path="CyPAtients/CyPatients.csproj" />
+  <Project Path="ServiceDefaults/ServiceDefaults.csproj" Id="3b9a81f9-8d71-42ce-829f-95d41befd84c" />
 </Solution>

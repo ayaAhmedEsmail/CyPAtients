@@ -1,7 +1,6 @@
 ﻿using CyPatients.DTO;
 using CyPatients.Models;
 using CyPatients.Service.interfaces;
-using Humanizer;
 using Microsoft.EntityFrameworkCore;
 namespace CyPatients.Service
 {
@@ -125,7 +124,7 @@ namespace CyPatients.Service
 
         public async Task<CursorPagination<PatientsDTO>> GetAllcursorPatientsAsync(int cursor)
         {
-            int pageSize = 1;
+            int pageSize =100;
             var result = await CursorPagination<Patient>.GetCursorPaginationPatient(
                 _context.Patients.OrderBy(p=>p.Id), pageSize, cursor);
 

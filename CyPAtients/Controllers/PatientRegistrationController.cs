@@ -1,8 +1,10 @@
 ﻿using CyPatients.DTO;
+using CyPatients.Hubs;
 using CyPatients.Models;
 using CyPatients.Service;
 using CyPatients.Service.interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CyPatients.Controllers
@@ -12,10 +14,13 @@ namespace CyPatients.Controllers
     public class PatientRegistrationController : ControllerBase
     {
         private readonly IpatientService _patientService;
+        private readonly IHubContext<PatientHub,IpatientHub> _hubContext;
 
-        public PatientRegistrationController(IpatientService patientService)
+
+        public PatientRegistrationController(IpatientService patientService, IHubContext<PatientHub, IpatientHub> hubContext)
         {
             _patientService = patientService;
+            _hubContext = hubContext;
         }
 
 
@@ -28,6 +33,10 @@ namespace CyPatients.Controllers
                     return BadRequest(ModelState);
                 
                 var newPatient = await _patientService.CreatePatientAsync(patient);
+
+                // add signalR notification
+                await _hubContext.Clients.All
+                    .PatientRegisterd( $"New patient registered: {newPatient.FirstNameEn} {newPatient.SecondNameEn}");
                 return CreatedAtAction(nameof(GetPatientsByID), new { id = newPatient.Id }, newPatient);
                 
             }
@@ -46,7 +55,6 @@ namespace CyPatients.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPatientsByID(int id)
         {
-            NationalIdDetails.getYAge("30105241234567");
             var patients = await _patientService.GetPatientByIdAsync(id);
 
             return Ok(patients);
@@ -77,7 +85,13 @@ namespace CyPatients.Controllers
                 return BadRequest(ModelState);
             
             var updatedPatient = await _patientService.UpdatePatientAsync(id, dto);
-            
+
+
+            // add signalR notification
+            await _hubContext.Clients.All
+                .PatientUpdated( $"Patient with ID {id} has been updated.");
+
+
             return Ok(updatedPatient);
         }
 
@@ -88,6 +102,10 @@ namespace CyPatients.Controllers
             try
             {
                 await _patientService.DeletePatientAsnc(id);
+
+                // add signalR notification
+                await _hubContext.Clients.All
+                    .PatientDeleted( $"Patient with ID {id} has been deleted.");
                 return NoContent();
             }
             catch (Exception ex)

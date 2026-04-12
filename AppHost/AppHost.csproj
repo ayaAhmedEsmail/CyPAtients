@@ -5,11 +5,11 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <UserSecretsId>52d60770-017d-4816-9fd6-240012629b86</UserSecretsId>
+    <UserSecretsId>56c66d2f-3aca-4fce-a48a-72bddc94e83d</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CyPAtients\CyPatients.csproj" />
+    <ProjectReference Include="..\CyPAtients\CyPatients.csproj" />
   </ItemGroup>
 
   <ItemGroup>
