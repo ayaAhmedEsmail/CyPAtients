@@ -3,6 +3,7 @@ using CyPatients.Hubs;
 using CyPatients.Models;
 using CyPatients.Service;
 using CyPatients.Service.interfaces;
+using CyPatients.Service.SSE;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -14,13 +15,19 @@ namespace CyPatients.Controllers
     public class PatientRegistrationController : ControllerBase
     {
         private readonly IpatientService _patientService;
-        private readonly IHubContext<PatientHub,IpatientHub> _hubContext;
+        //private readonly IHubContext<PatientHub,IpatientHub> _hubContext;
+        private readonly SseConnectionManager _sseConnectionManager;
 
 
-        public PatientRegistrationController(IpatientService patientService, IHubContext<PatientHub, IpatientHub> hubContext)
+        //public PatientRegistrationController(IpatientService patientService, IHubContext<PatientHub, IpatientHub> hubContext)
+        //{
+        //    _patientService = patientService;
+        //    _hubContext = hubContext;
+        //}
+        public PatientRegistrationController(IpatientService patientService, SseConnectionManager sseConnectionManager)
         {
             _patientService = patientService;
-            _hubContext = hubContext;
+            _sseConnectionManager = sseConnectionManager;
         }
 
 
@@ -35,8 +42,15 @@ namespace CyPatients.Controllers
                 var newPatient = await _patientService.CreatePatientAsync(patient);
 
                 // add signalR notification
-                await _hubContext.Clients.All
-                    .PatientRegisterd( $"New patient registered: {newPatient.FirstNameEn} {newPatient.SecondNameEn}");
+                //await _hubContext.Clients.All
+                //    .PatientRegisterd( $"New patient registered: {newPatient.FirstNameEn} {newPatient.SecondNameEn}");
+
+
+                // Add Sse 
+                await _sseConnectionManager.Boadcastasync(
+                    "PatientRegistered",
+                    $"New patient registered: {newPatient.FirstNameEn} {newPatient.SecondNameEn}"
+                    );
                 return CreatedAtAction(nameof(GetPatientsByID), new { id = newPatient.Id }, newPatient);
                 
             }
@@ -88,9 +102,11 @@ namespace CyPatients.Controllers
 
 
             // add signalR notification
-            await _hubContext.Clients.All
-                .PatientUpdated( $"Patient with ID {id} has been updated.");
+            //await _hubContext.Clients.All
+            //    .PatientUpdated( $"Patient with ID {id} has been updated.");
 
+            //add sse
+            await _sseConnectionManager.Boadcastasync("PatientUpdated", $"Patient with ID {id} has been updated.");
 
             return Ok(updatedPatient);
         }
@@ -104,8 +120,10 @@ namespace CyPatients.Controllers
                 await _patientService.DeletePatientAsnc(id);
 
                 // add signalR notification
-                await _hubContext.Clients.All
-                    .PatientDeleted( $"Patient with ID {id} has been deleted.");
+                //await _hubContext.Clients.All
+                //    .PatientDeleted( $"Patient with ID {id} has been deleted.");
+
+                await _sseConnectionManager.Boadcastasync("PatientDeleted", $"Patient with ID {id} has been deleted.");
                 return NoContent();
             }
             catch (Exception ex)

@@ -70,14 +70,14 @@
 
         public int? FinancialType { get; set; }
 
-        public  int MedicalEntity  { get; set; }
+        public  int? MedicalEntity  { get; set; }
 
-        public int MaritalStatus { get; set; }
+        public int? MaritalStatus { get; set; }
 
-        public int Nationality { get; set; }
+        public int? Nationality { get; set; }
+        public int? VisitType { get; set; }
 
-        public int Title { get; set; }
+        public int? Title { get; set; }
 
-        public int VisitType { get; set; }
     }
 }

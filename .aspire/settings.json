@@ -1,7 +1,11 @@
 {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   "appHostPath": "../PatientValidation.AppHost/PatientValidation.AppHost.csproj"
+=======
+  "appHostPath": "../AppHost/AppHost.csproj"
+>>>>>>> a6a7a8ae018345026f1c7be4656063631923ffe6
 =======
   "appHostPath": "../AppHost/AppHost.csproj"
 >>>>>>> a6a7a8ae018345026f1c7be4656063631923ffe6

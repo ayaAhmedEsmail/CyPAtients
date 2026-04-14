@@ -1,5 +1,6 @@
 ﻿using CyPatients.Models;
 using CyPatients.Service.interfaces;
+using CyPatients.Service.SSE;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,8 @@ namespace CyPatients.Controllers
     public class PatientValidationController : ControllerBase
     {
         private IRegistrationValidation _registrationValidation;
+        private readonly SseConnectionManager _sseConnectionManager;
+
         public PatientValidationController(IRegistrationValidation registrationValidation)
         {
             _registrationValidation = registrationValidation;
@@ -40,6 +43,8 @@ namespace CyPatients.Controllers
             try
             {
                 var updatedValidation = await _registrationValidation.UpdateValidationAsync(visitID, entityID, validation);
+
+               await _sseConnectionManager.Boadcastasync("ValidationUpdate", updatedValidation.ToString());
                 return Ok(updatedValidation);
             }
             catch (DbUpdateException ex)

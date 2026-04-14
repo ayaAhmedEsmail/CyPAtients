@@ -2,6 +2,7 @@
 using CyPatients.Hubs;
 using CyPatients.Service;
 using CyPatients.Service.interfaces;
+using CyPatients.Service.SSE;
 using Microsoft.Extensions.Options;
 
 namespace CyPAtients
@@ -26,12 +27,16 @@ namespace CyPAtients
             builder.Services.AddScoped<IValidationService, ValidationService> ();
             
             builder.Services.AddValidation();
-            builder.Services.AddSignalR(options =>
-            {
-                options.EnableDetailedErrors = true;
-                options.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
-                options.KeepAliveInterval = TimeSpan.FromSeconds(15);
-            });
+
+            // add sse as singletone
+            builder.Services.AddSingleton<SseConnectionManager>();
+
+            //builder.Services.AddSignalR(options =>
+            //{
+            //    options.EnableDetailedErrors = true;
+            //    options.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
+            //    options.KeepAliveInterval = TimeSpan.FromSeconds(15);
+            //});
 
             builder.Services.AddCors(options =>
             {
@@ -57,7 +62,7 @@ namespace CyPAtients
 
 
             app.MapControllers();
-            app.MapHub<CyPatients.Hubs.PatientHub>("/hubs/patient");
+           // app.MapHub<CyPatients.Hubs.PatientHub>("/hubs/patient");
 
 
             app.Run();
